@@ -27,14 +27,14 @@ A full-stack video library dashboard that allows users to browse, sort, filter, 
 
 ### Prerequisites
 
-- Node.js >= 18
+- Node.js >= 20
 - Docker & Docker Compose
 
 ### 1. Clone the repo
 
 ```bash
-git clone https://github.com/joelureellanah/veedeo-take-home.git
-cd veedeo-take-home
+git clone https://github.com/JoelUreellanah/veed-take-home-assignment.git
+cd veed-take-home-assignment
 ```
 
 ### 2. Run with Docker (Recommended)
@@ -43,12 +43,25 @@ cd veedeo-take-home
 docker-compose up --build
 ```
 
+This will spin up **three containers**: frontend, backend, and database.
+
+💡 Wait until all containers are fully built and running. The app is ready when you see logs like this:
+
+```
+backend-1   | {"level":30,"time":1752584995171,"pid":279,"hostname":"d117e3bfd0af","msg":"Server listening at http://172.20.0.3:4000"}
+backend-1   | {"level":30,"time":1752584995171,"pid":279,"hostname":"d117e3bfd0af","msg":"Server ready at http://127.0.0.1:4000"}
+```
+
+Once you see the above, you can access:
+
 - Frontend: `http://localhost:3000`
 - Backend: `http://localhost:4000`
 
 ### 3. Local Dev Setup (Optional)
 
 #### Database
+
+In `backend/.env` set `DATABASE_URL="postgresql://postgres:postgres@localhost:5432/veedeo"`
 
 ```bash
 docker compose up db
@@ -62,6 +75,7 @@ npm install
 npx prisma migrate dev
 npm run seed
 npm run dev
+npm run test (to run unit/integration test suite)
 ```
 
 #### Frontend
@@ -70,6 +84,7 @@ npm run dev
 cd frontend
 npm install
 npm run dev
+npm run test (to run test suite)
 ```
 
 ---
@@ -102,9 +117,9 @@ npm run dev
 - <b>User authentication</b> and <b>authorization</b> are out of scope for this task, but essential for a multi-user production environment. APIs are publicly exposed for simplicity.
 - <b>Validation at API Boundaries Only</b>: Request query and body validation are handled with zod at the API layer. This works well for a typed Node environment but doesn't protect against incorrect data being inserted manually into the database. Additional model-level constraints or database-level validation (e.g., via Prisma schema or database schema constraints) would be necessary in production.
 - <b>Data Model Simplicity</b>: for example, Tags are implemented as simple string arrays without normalization or a separate tag table. This avoids premature optimization but may lead to inconsistencies in tag spelling or casing over time. For scale, a normalized tag model would be preferable.
-- <b>Limited UI Feedback Patterns</b>: While errors and loading states are handled gracefully, deeper UX improvements like optimistic UI, in-app notifications, or undo actions are omitted due to time constraints.
+- <b>Limited UI Feedback Patterns</b>: While some errors and loading states are handled gracefully, deeper UX improvements like optimistic UI, in-app notifications, or undo actions are omitted due to time constraints. Other example is: error handling is needed when adding a new video (ie. servers are down, video upload takes a long time to complete, real-time completion bar would be required and so on..)
 - <b>UI Design Trade-off</b>: The UI prioritizes functional clarity and responsiveness over visual flair. No animations or deep component theming were added, to keep the focus on architecture and core interactivity.
-- Minimal end-to-end testing due to time.
+- Minimal end-to-end testing due to time constraints.
 - Static values like `duration` and `views` are not editable for now.
 
 ---
